@@ -6,27 +6,17 @@ import ResultPanel from "@/components/ResultPanel";
 import HistoryDrawer from "@/components/HistoryDrawer";
 import { useResolveStore } from "@/store/useResolveStore";
 
-const EXAMPLE_TEXT = `【京东】 \`https://u.jd.com/X659fJ0\`  CA1393 「instax mini双白相纸 」
-点击链接直接打开 或者复制文案打开京东
-
-————————
-更多好物推荐： \`https://u.jd.com/XgeY8Qd\``;
-
 export default function Home() {
   const loadHistory = useResolveStore((s) => s.loadHistory);
-  const setInput = useResolveStore((s) => s.setInput);
   const [backendOnline, setBackendOnline] = useState<boolean | null>(null);
 
   useEffect(() => {
     loadHistory();
-    // 探测后端
     fetch("/api/health")
       .then((r) => r.json())
       .then(() => setBackendOnline(true))
       .catch(() => setBackendOnline(false));
   }, [loadHistory]);
-
-  const applyExample = () => setInput(EXAMPLE_TEXT);
 
   const scrollToWorkspace = () => {
     document
@@ -49,7 +39,7 @@ export default function Home() {
 
         <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-20">
           <div className="grid gap-10 md:grid-cols-12">
-            <div className="md:col-span-7 animate-rise">
+            <div className="md:col-span-9 animate-rise">
               <div className="mb-4 flex flex-wrap items-center gap-2">
                 <span className="stamp-tag bg-jd-red text-paper">
                   <Sparkles size={12} strokeWidth={3} />
@@ -102,14 +92,6 @@ export default function Home() {
                   <Zap size={16} strokeWidth={2.5} />
                   开始解析
                 </button>
-                <button
-                  type="button"
-                  onClick={applyExample}
-                  className="btn-ghost text-sm"
-                >
-                  <Sparkles size={14} strokeWidth={2.5} />
-                  填入示例
-                </button>
               </div>
 
               <ul className="mt-8 grid grid-cols-1 gap-2 text-sm text-ink-soft sm:grid-cols-3">
@@ -123,39 +105,6 @@ export default function Home() {
                   <span className="h-2 w-2 bg-ink" /> 一键复制结果
                 </li>
               </ul>
-            </div>
-
-            {/* 示例卡片 */}
-            <div className="md:col-span-5">
-              <div className="press-card grain p-5">
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="stamp-tag bg-ink text-paper">
-                    SAMPLE · 示例输入
-                  </span>
-                  <span className="font-mono text-[11px] text-muted">
-                    bp · text
-                  </span>
-                </div>
-                <pre className="whitespace-pre-wrap break-all border-2 border-ink bg-paper p-4 font-mono text-[11px] leading-relaxed">
-                  {EXAMPLE_TEXT}
-                </pre>
-                <div className="my-3 flex items-center justify-center gap-2 text-muted">
-                  <span className="text-[11px] uppercase tracking-widest">
-                    resolve
-                  </span>
-                  <ArrowDown size={12} />
-                </div>
-                <div className="bg-acid border-2 border-ink p-3 font-mono text-[11px] leading-relaxed break-all">
-                  https://trade.m.jd.com/pay?commlist=
-                  <span className="bg-ink px-1 text-paper">100154886849</span>
-                  ,,1,
-                  <span className="bg-ink px-1 text-paper">100154886849</span>
-                  ,1,0,0
-                </div>
-                <p className="mt-3 text-[11px] text-muted">
-                  点击「填入示例」可直接体验
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -247,8 +196,9 @@ export default function Home() {
             <span>·</span>
             <span>京东 bp 文案 → commlist 结算链接</span>
           </div>
-          <div className="font-mono">
-            © {new Date().getFullYear()} · by pb
+          <div className="font-mono text-right">
+            <div>© {new Date().getFullYear()} · by pb</div>
+            <div className="text-[10px] mt-1">v2.1 · 更新于 2026-07-14</div>
           </div>
         </div>
       </footer>
