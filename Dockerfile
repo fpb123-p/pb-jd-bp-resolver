@@ -24,6 +24,7 @@ RUN npm ci --omit=dev
 # 复制构建产物与后端代码
 COPY --from=builder /app/dist ./dist
 COPY api ./api
+COPY server ./server
 COPY tsconfig.json ./
 
 EXPOSE 3001
