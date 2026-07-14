@@ -35,11 +35,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         finalUrl = result.finalUrl;
         console.log(`  → 短链跳转：${sourceLink} → ${finalUrl}`);
       } catch (err) {
+        const msg = (err as Error).message || "";
+        const isTimeout =
+          msg.includes("aborted") ||
+          msg.includes("timeout") ||
+          msg.includes("TIMEDOUT");
         return res.status(502).json({
           ok: false,
           sourceLink,
           finalUrl: sourceLink,
-          error: `短链解析失败：${(err as Error).message}`,
+          error: isTimeout
+            ? "短链解析超时（京东响应太慢或网络不通），请稍后重试"
+            : `短链解析失败：${msg}`,
         });
       }
     }
