@@ -36,17 +36,15 @@ export default function HistoryDrawer() {
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-ink/50 transition-opacity duration-200 ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`fixed inset-0 z-40 bg-ink/50 transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
         onClick={() => setOpen(false)}
         aria-hidden={!open}
       />
 
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l-2 border-ink bg-paper transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l-2 border-ink bg-paper transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"
+          }`}
         aria-hidden={!open}
       >
         <div className="flex items-center justify-between border-b-2 border-ink px-5 py-4">
