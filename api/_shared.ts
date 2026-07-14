@@ -80,14 +80,18 @@ export async function resolveShortLink(
   shortUrl: string
 ): Promise<{ finalUrl: string; status: number; hops: string[] }> {
   let currentUrl = shortUrl;
-  const maxRedirects = 8;
+  const maxRedirects = 5;
   let lastStatus = 200;
   const hops: string[] = [shortUrl];
 
   for (let i = 0; i < maxRedirects; i++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+
     const res = await fetch(currentUrl, {
       method: "GET",
       redirect: "manual",
+      signal: ctrl.signal,
       headers: {
         "User-Agent":
           "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
@@ -96,7 +100,7 @@ export async function resolveShortLink(
         "Accept-Language": "zh-CN,zh;q=0.9",
         Referer: shortUrl,
       },
-    });
+    }).finally(() => clearTimeout(timer));
 
     lastStatus = res.status;
 
